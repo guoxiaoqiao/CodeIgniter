@@ -399,13 +399,18 @@ if ( ! is_php('5.4'))
 	$class = ucfirst($RTR->class);
 	$method = $RTR->method;
 
-	if (empty($class) OR ! file_exists(APPPATH.'controllers/'.$RTR->directory.$class.'.php'))
+	if (PHP_OS == 'WINNT') {
+		$class_os = iconv('utf-8', 'gb18030', $class);
+	} else	{
+		$class_os = $class;
+	}
+	if (empty($class) OR ! file_exists(APPPATH.'controllers/'.$RTR->directory.$class_os.'.php'))
 	{
 		$e404 = TRUE;
 	}
 	else
 	{
-		require_once(APPPATH.'controllers/'.$RTR->directory.$class.'.php');
+		require_once(APPPATH.'controllers/'.$RTR->directory.$class_os.'.php');
 
 		if ( ! class_exists($class, FALSE) OR $method[0] === '_' OR method_exists('CI_Controller', $method))
 		{

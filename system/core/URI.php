@@ -219,6 +219,8 @@ class CI_URI {
 			}
 		}
 
+		$uri = urldecode($uri);
+
 		// This section ensures that even on servers that require the URI to be in the query string (Nginx) a correct
 		// URI is found, and also fixes the QUERY_STRING server var and $_GET array.
 		if (trim($uri, '/') === '' && strncmp($query, '/', 1) === 0)
@@ -325,7 +327,7 @@ class CI_URI {
 	 */
 	public function filter_uri(&$str)
 	{
-		if ( ! empty($str) && ! empty($this->_permitted_uri_chars) && ! preg_match('/^['.$this->_permitted_uri_chars.']+$/i'.(UTF8_ENABLED ? 'u' : ''), $str))
+		if ( ! empty($str) && ! empty($this->_permitted_uri_chars) && ! preg_match('/^['.$this->_permitted_uri_chars.']+$/iu'.(UTF8_ENABLED ? 'u' : ''), $str))
 		{
 			show_error('The URI you submitted has disallowed characters.', 400);
 		}

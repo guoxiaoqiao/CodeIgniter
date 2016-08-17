@@ -338,15 +338,22 @@ class CI_Router {
 		// is found or when such a directory doesn't exist
 		while ($c-- > 0)
 		{
+			if (PHP_OS == 'WINNT') {
+				$segment = iconv('utf-8', 'gb18030', $segments[0]);
+			} else {
+				$segment = $segments[0];
+			}
+
 			$test = $this->directory
-				.ucfirst($this->translate_uri_dashes === TRUE ? str_replace('-', '_', $segments[0]) : $segments[0]);
+				.ucfirst($this->translate_uri_dashes === TRUE ? str_replace('-', '_', $segment) : $segment);
 
 			if ( ! file_exists(APPPATH.'controllers/'.$test.'.php')
 				&& $directory_override === FALSE
-				&& is_dir(APPPATH.'controllers/'.$this->directory.$segments[0])
+				&& is_dir(APPPATH.'controllers/'.$this->directory.$segments)
 			)
 			{
-				$this->set_directory(array_shift($segments), TRUE);
+				array_shift($segments);
+				$this->set_directory($segment, TRUE);
 				continue;
 			}
 

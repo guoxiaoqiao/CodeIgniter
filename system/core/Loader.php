@@ -325,12 +325,19 @@ class CI_Loader {
 		{
 			foreach ($this->_ci_model_paths as $mod_path)
 			{
-				if ( ! file_exists($mod_path.'models/'.$path.$model.'.php'))
+				if (PHP_OS == 'WINNT') {
+					$path = iconv('utf-8', 'gb18030', $path);
+					$model_os = iconv('utf-8', 'gb18030', $model);
+				} else {
+					$model_os = $model;
+				}
+				
+				if ( ! file_exists($mod_path.'models/'.$path.$model_os.'.php'))
 				{
 					continue;
 				}
 
-				require_once($mod_path.'models/'.$path.$model.'.php');
+				require_once($mod_path.'models/'.$path.$model_os.'.php');
 				if ( ! class_exists($model, FALSE))
 				{
 					throw new RuntimeException($mod_path."models/".$path.$model.".php exists, but doesn't declare class ".$model);
@@ -896,6 +903,10 @@ class CI_Loader {
 
 			foreach ($this->_ci_view_paths as $_ci_view_file => $cascade)
 			{
+				if (PHP_OS == 'WINNT') {
+					$_ci_file = iconv('utf-8', 'gb18030', $_ci_file);
+				}
+
 				if (file_exists($_ci_view_file.$_ci_file))
 				{
 					$_ci_path = $_ci_view_file.$_ci_file;
