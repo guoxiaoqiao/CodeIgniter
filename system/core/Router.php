@@ -349,7 +349,7 @@ class CI_Router {
 
 			if ( ! file_exists(APPPATH.'controllers/'.$test.'.php')
 				&& $directory_override === FALSE
-				&& is_dir(APPPATH.'controllers/'.$this->directory.$segments)
+				&& is_dir(APPPATH.'controllers/'.$this->directory.$segment)
 			)
 			{
 				array_shift($segments);
